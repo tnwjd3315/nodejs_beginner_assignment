@@ -43,18 +43,17 @@ router.get("/comments", async(req,res) => {
   })
 })
 
-
 // localhost:3000/api/comments POST Method
 router.post("/comments", async(req,res) => {
   const {postsId, commentsId, user, title, content, createdAt} = req.body
-  // find로 게시글 조회
-  const commentslist = await Comment.find({commentsId})
-  if (commentslist.length) {
-    return res.status(400).json({success:false, errorMessage:"이미 있는 댓글입니다."})
-  }
+  // // find로 게시글 조회
+  // const commentslist = await Comment.find({commentsId})
+  // if (commentslist.length) {
+  //   return res.status(400).json({success:false, errorMessage:"이미 있는 댓글입니다."})
+  // }
   // Comment 스키마를 통해 데이터 생성, createdComments에 할당.
   const createdComments = await Comment.create({postsId, commentsId, user, title, content, createdAt})
-  res.json({ commentslist: createdComments})
+  res.json({ "commentslist": createdComments})
 })
 
 

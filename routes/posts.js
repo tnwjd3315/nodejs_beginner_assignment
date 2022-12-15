@@ -48,7 +48,7 @@ router.get("/posts", async(req,res) => {
   const comments = await Comment.find({commentsId: Ids})
   const postsdata = posts.map((post) => {
     return{
-      "postsId": post.postsId, // 여기를 quantity처럼 새로운 값이 아니라 goods처럼 하나하나 찾는 값으로 바꿔야한다.
+      "postsId": post.postsId,
       "user": post.user,
       "title": post.title,
       "content": post.content,
@@ -66,14 +66,14 @@ router.get("/posts", async(req,res) => {
 // post를 요청했을 때 body에 있는 데이터를 객체 구조분해 할당을 통해 가져온다.
 router.post("/posts/", async(req,res) => {
   const {postsId, user, title, content, createdAt} = req.body
-  // find로 게시글 조회
-  const postslist = await Posts.find({postsId})
-  if (postslist.length) {
-    return res.status(400).json({success:false, errorMessage:"이미 있는 게시글입니다."})
-  }
+  // // find로 게시글 조회
+  // const postslist = await Posts.find({postsId})
+  // if (postslist.length) {
+  //   return res.status(400).json({success:false, errorMessage:"이미 있는 게시글입니다."})
+  // }
   // Posts 스키마를 통해 데이터 생성, createdPosts에 할당.
   const createdPosts = await Posts.create({postsId, user, title, content, createdAt})
-  res.json({ postslist: createdPosts})
+  res.json({ "postslist": createdPosts})
 })
 
 
@@ -81,7 +81,7 @@ router.post("/posts/", async(req,res) => {
 
 // localhost:3000/api/posts DELETE Method
 
-// router를 app.js에서 사용하기 위해 내보내주는 코드
 
+// router를 app.js에서 사용하기 위해 내보내주는 코드
 module.exports = router
 
