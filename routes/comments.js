@@ -8,9 +8,10 @@ const Comment = require("../schemas/comment.js")
 const Posts = require("../schemas/post.js")
 
 // localhost:3000/api/comments GET Method
-router.get("/comments", async(req,res) => {
+router.get("/comments/:postsId", async(req,res) => {
   // 모든 댓글 조회, Comment정보값을 comments에 할당.
-  const comments = await Comment.find({})
+  const {postsId} = req.param
+  const comments = await Comment.find({}).select({"postsId": postsId})
   // 배열이 이런식으로 되어있을 때 postsId를 가져와야 함. postsIds라는 이름으로 할당함
   // [
   //  {postsId, commentsId, user, title, content, createdAt},
@@ -28,7 +29,7 @@ router.get("/comments", async(req,res) => {
   // map 반복문을 통해 리턴값 posts라는 변수에 해당 post의 정보를 넣어줌.
   const commentsdata = comments.map((comment) => {
     return {
-      "postsId": 1,
+      "postsId": 
       "commentsId": comment.commentsId,
       "user": comment.user,
       "title": comment.title,
@@ -45,14 +46,14 @@ router.get("/comments", async(req,res) => {
 
 // localhost:3000/api/comments POST Method
 router.post("/comments", async(req,res) => {
-  const {postsId, commentsId, user, title, content, createdAt} = req.body
+  const {postsId, commentsId, user, title, content, createdAt, password} = req.body
   // // find로 게시글 조회
   // const commentslist = await Comment.find({commentsId})
   // if (commentslist.length) {
   //   return res.status(400).json({success:false, errorMessage:"이미 있는 댓글입니다."})
   // }
   // Comment 스키마를 통해 데이터 생성, createdComments에 할당.
-  const createdComments = await Comment.create({postsId, commentsId, user, title, content, createdAt})
+  const createdComments = await Comment.create({postsId, commentsId, user, title, content, createdAt, password})
   res.json({ "commentslist": createdComments})
 })
 
