@@ -78,8 +78,32 @@ router.post("/posts/", async(req,res) => {
 
 
 // localhost:3000/api/posts PUT Method
+router.put("posts/:postsId", async(req, res) => {
+  const {postsId} = req.params //라우터 매개 변수에 대한 정보가 담긴 객체
+  const {user} = req.params // request호출 시 body로 전달된 정보가 담긴 객체
+  const {password} = req.params
+  const {title} = req.body
+  const {content} = req.body
+
+  //user, password 같을 때만 수정 권한 주고싶다.
+  const isPwRight = await Posts.find({password})
+  if (isPwRight.length) {
+    await Posts.updateOne({postsId: postsId},
+      {$set: {title: title, content: content}})
+  }
+  res.json({success:true})
+})
 
 // localhost:3000/api/posts DELETE Method
+router.delete("posts/:postsId", async(req, res) => {
+  const {postsId} = req.params
+
+  const isPwRight = await Posts.find({password})
+  if (isPwRight.length) {
+    await Posts.deleteOne({postsId})
+  }
+  res.json({result:"success"})
+})
 
 
 // router를 app.js에서 사용하기 위해 내보내주는 코드

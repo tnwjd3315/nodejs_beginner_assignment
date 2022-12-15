@@ -1,11 +1,12 @@
 // const express = require("express")
 // const router = express.Router()
 const mongoose = require("mongoose")
+// const idAutoIncrement = require("id-auto-increment")
 
 // post 모델(스키마) 작성. key값들의 정보를 입력함
 const postsSchema = new mongoose.Schema({
   postsId: {
-    type: Number,
+    type: String,
     required: true,
   },
   user: {
