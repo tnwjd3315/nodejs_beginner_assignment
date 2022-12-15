@@ -4,9 +4,9 @@ const mongoose = require("mongoose")
 
 // comment 모델(스키마) 작성. key값들의 정보를 입력함
 const commentsSchema = new mongoose.Schema({
-  commentsId: {
-    type: Number,
-    required: true
+  postsId: {
+    type: String,
+    required:false
   },
   user: {
     type: String,
