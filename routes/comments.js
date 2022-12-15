@@ -1,3 +1,7 @@
+// 자동으로 저장되는 _id값을 객체로 만들어주기 위한 기능
+const mongoose = require("mongoose")
+const {Types} = require("mongoose")
+
 //Router는 클라의 요청을 처리하는 express.js 기능
 const express = require("express")
 const router = express.Router()
@@ -10,36 +14,12 @@ const Posts = require("../schemas/post.js")
 // localhost:3000/api/comments GET Method
 router.get("/comments/:_id", async(req,res) => {
   // 모든 댓글 조회, Comment정보값을 comments에 할당.
-  const {_id} = req.param
-  const comments = await Comment.find({}).select({"_id": _id})
-  // 배열이 이런식으로 되어있을 때 postsId를 가져와야 함. postsIds라는 이름으로 할당함
-  // [
-  //  {postsId, commentsId, user, title, content, createdAt},
-  //  {postsId, commentsId, user, title, content, createdAt}  
-  // ]
-  // map을 통해 배열 안의 값들을 하나씩 순회돌아 리턴된 결과값만 postsIds에 할당해줌
-  const postsId = comments.map((comment) => {
-    // 반복문 돌때 postsId만 추출함. 리스트(배열)이 [1,4,8] 이런식으로 리턴됨
-    return comment.postsId
-  })
-  // 실제로 postsId에 해당하는 post를 가져오기
-  // postsId에 해당하는 값이 postsIds 리스트(배열)안에 있으면, Posts에 해당하는 모든 정보 가져오기
-  const posts = await Posts.find({_id: postsId})
-
-  // map 반복문을 통해 리턴값 posts라는 변수에 해당 post의 정보를 넣어줌.
-  const commentsdata = comments.map((comment) => {
-    return {
-      "user": comment.user,
-      "title": comment.title,
-      "content": comment.content,
-      "createdAt": comment.createdAt,
-      //post에 해당하는 postsId와 comment에 해당하는 postsId가 일치할 때만 결과값을 리턴함
-      // "posts": posts.find((post => post._id === comment._id))
-    }
-  })
-  res.json({
-    "comments": commentsdata
-  })
+  // const {_id} = req.params
+  const {postsId: _id} = req.params
+  const comments = await Comment.find()
+  res.json({comments})
+  // console.log(`postId 보이는 모습: ${postsId}`)
+  // console.log(`comments 보이는 모습: ${comments}`)
 })
 
 // localhost:3000/api/comments POST Method
@@ -47,15 +27,12 @@ router.post("/comments/:_id", async(req,res) => {
   const {user, title, content, createdAt, password} = req.body
   const postsId = req.params._id
   console.log(postsId)
-  // // find로 게시글 조회
-  // const commentslist = await Comment.find({commentsId})
-  // if (commentslist.length) {
-  //   return res.status(400).json({success:false, errorMessage:"이미 있는 댓글입니다."})
-  // }
-  // Comment 스키마를 통해 데이터 생성, createdComments에 할당.
   const createdComments = await Comment.create({postsId, user, title, content, createdAt, password})
   res.json({ "commentslist": createdComments})
 })
 
+// localhost:3000/api/comments PUT Method
+
+// localhost:3000/api/comments DELETE Method
 
 module.exports = router

@@ -20,7 +20,7 @@ const commentsSchema = new mongoose.Schema({
     type: String,
   },
   password:{
-    required:false,
+    type: String
   }
 
 });

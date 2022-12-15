@@ -11,44 +11,19 @@ const Posts = require("../schemas/post.js")
 const Comment = require("../schemas/comment.js")
 
 // localhost:3000/api/posts GET Method
-// 구조: router.METHOD(PATH, HANDLER)
-// express에서 http라우터를 사용하기 위해서 router.해당method 작성
 router.get("/posts", async(req,res) => {
   const posts = await Posts.find({})
-  const Ids = posts.map((post) => {
-    return post.postsId
-  })
-  const comments = await Comment.find({commentsId: Ids})
-  const postsdata = posts.map((post) => {
-    return{
-      "postsId": post.postsId,
-      "user": post.user,
-      "title": post.title,
-      "content": post.content,
-      "createdAt": post.createdAt,
-    }
-  })
-  res.json({
-    "posts": postsdata,
-  })
+  res.json({posts})
+  console.log(`post id 값:${Types.ObjectId(posts._id)}`)
+  console.log(`posts 값:${posts}`)
 })
 
 // localhost:3000/api/posts POST Method
-// 구조: router.METHOD(PATH, HANDLER)
-// express에서 http라우터를 사용하기 위해서 router.해당method 작성
-// post를 요청했을 때 body에 있는 데이터를 객체 구조분해 할당을 통해 가져온다.
 router.post("/posts", async(req,res) => {
   const {user, title, content, createdAt, password} = req.body
-  // // find로 게시글 조회
-  // const postslist = await Posts.find({postsId})
-  // if (postslist.length) {
-  //   return res.status(400).json({success:false, errorMessage:"이미 있는 게시글입니다."})
-  // }
-  // Posts 스키마를 통해 데이터 생성, createdPosts에 할당.
   const createdPosts = await Posts.create({user, title, content, createdAt, password})
   res.json({ "postslist": createdPosts})
 })
-
 
 // localhost:3000/api/posts PUT Method
 router.put("posts/:_id", async(req, res) => {
