@@ -25,11 +25,9 @@ router.post("/comments/:_id", async(req,res) => {
 })
 
 // localhost:3000/api/comments PUT Method
-router.put("comments/:_id", async(req, res) => {
+router.put("/comments/:_id", async(req, res) => {
   const {_id} = req.params
-  const {password} = req.body
-  const {title} = req.body
-  const {content} = req.body
+  const {password,title,content} = req.body
   await Comment.findById(Types.ObjectId(_id), async (err, doc) => {
     if (err) {
       console.error(err)
@@ -46,7 +44,7 @@ router.put("comments/:_id", async(req, res) => {
 })
 
 // localhost:3000/api/comments DELETE Method
-router.delete("comments/:_id", async(req, res) => {
+router.delete("/comments/:_id", async(req, res) => {
   const {_id} = req.params
   await Comment.findById(Types.ObjectId(_id), async (err, doc) => {
     if (err) {

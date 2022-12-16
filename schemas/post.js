@@ -15,6 +15,7 @@ const postsSchema = new mongoose.Schema({
     type: String,
   },
   password:{
+    type: String,
     required:false,
   }
 });

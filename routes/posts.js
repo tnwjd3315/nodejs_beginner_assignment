@@ -22,28 +22,35 @@ router.post("/posts", async(req,res) => {
 })
 
 // localhost:3000/api/posts PUT Method
-router.put("posts/:_id", async(req, res) => {
+router.put("/posts/:_id", async(req,res) => {
   const {_id} = req.params
-  const {password} = req.body
-  const {title} = req.body
-  const {content} = req.body
-  await Posts.findById(Types.ObjectId(_id), async (err, doc) => {
-    if (err) {
-      console.error(err)
-    }
-    const isPwRight = doc.password === password
-    if (isPwRight) {
-      await Posts.updateOne(
-        {_id: _id},
-        {$set: {title, content}}
-        )
-    }
-  })
-  res.json({success:true})
+  const {title, content} = req.body
+  await Posts.updateOne(
+    {$set: {title, content}}
+    )
+    res.json({success:true})
 })
 
+// router.put("/posts/:_id", async(req, res) => {
+//   const {_id} = req.params
+//   const {password, title, content} = req.body
+//   await Posts.findById(Types.ObjectId(_id), async (err, doc) => {
+//     if (err) {
+//       console.error(err)
+//     }
+//     const isPwRight = doc.password === password
+//     if (isPwRight) {
+//       await Posts.updateOne(
+//         {_id: _id},
+//         {$set: {title, content}}
+//         )
+//     }
+//   })
+//   res.json({success:true})
+// })
+
 // localhost:3000/api/posts DELETE Method
-router.delete("posts/:_id", async(req, res) => {
+router.delete("/posts/:_id", async(req, res) => {
   const {_id} = req.params
   await Posts.findById(Types.ObjectId(_id), async (err, doc) => {
     if (err) {
