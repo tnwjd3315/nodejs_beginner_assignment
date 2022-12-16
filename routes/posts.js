@@ -1,4 +1,3 @@
-// 자동 생성되는 _id값 객체로 만들어주기
 const mongoose = require("mongoose")
 const {Types} = require("mongoose")
 
@@ -59,4 +58,3 @@ router.delete("posts/:_id", async(req, res) => {
 })
 
 module.exports = router
-

@@ -1,4 +1,3 @@
-// 자동 생성되는 _id값 객체로 만들어주기
 const mongoose = require("mongoose")
 const {Types} = require("mongoose")
 
@@ -8,10 +7,10 @@ const router = express.Router()
 const Comment = require("../schemas/comment.js")
 const Posts = require("../schemas/post.js")
 
+
 // localhost:3000/api/comments GET Method
 router.get("/comments/:_id", async(req,res) => {
   const {_id} = req.params
-  // const {postsId: _id} = req.params
   const comments = await Comment.find({postsId: _id})
   res.json({comments})
 })
